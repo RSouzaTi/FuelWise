@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">FuelWise</string>
+
+    <string name="title_price">💰 Preço dos Combustíveis (R$ / litro)</string>
+    <string name="title_consumption">📊 Consumo do seu Veículo (km/l)</string>
+    <string name="title_car_selection">Selecione o modelo do seu carro para preencher o consumo médio:</string>
+
+    <string name="hint_gasoline_price">Preço da Gasolina</string>
+    <string name="hint_ethanol_price">Preço do Etanol (Álcool)</string>
+    <string name="hint_gasoline_consumption">Gasolina (km/l)</string>
+    <string name="hint_ethanol_consumption">Etanol (km/l)</string>
+
+    <string name="button_calculate">CALCULAR MELHOR COMBUSTÍVEL</string>
+    <string name="button_search_consumption">Buscar Consumo Médio do Carro</string>
+
+    <string name="consumption_gasoline_format">Gasolina: %1$s km/l</string>
+    <string name="consumption_ethanol_format">Etanol: %1$s km/l</string>
+
+    <string name="error_invalid_input">⚠️ Por favor, preencha todos os campos com valores válidos (&gt; 0).</string>
+    <string name="currency_price">R$%1$s</string>
+    <string name="percentage">%1$s%%</string>
+
+    <string name="result_equilibrium_point">\n\n(Ponto de Equilíbrio: Etanol deve custar até %1$s do preço da Gasolina)</string>
+    <string name="result_ethanol_better">✅ O combustível mais rentável é o %1$s.\n\nO Etanol está %2$s mais vantajoso em relação ao ponto de equilíbrio do seu veículo.</string>
+    <string name="result_gasoline_better">✅ O combustível mais rentável é a %1$s.\n\nO Etanol teria que custar %2$s para ser vantajoso. Ele está %3$s mais caro do que o ponto de equilíbrio.</string>
+    <string name="o_combust_vel_mais_rent_vel_a_gasolina">O combustível mais rentável é a GASOLINA.</string>
+
+</resources>
