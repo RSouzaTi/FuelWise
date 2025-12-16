@@ -25,4 +25,26 @@
     <string name="result_gasoline_better">✅ O combustível mais rentável é a %1$s.\n\nO Etanol teria que custar %2$s para ser vantajoso. Ele está %3$s mais caro do que o ponto de equilíbrio.</string>
     <string name="o_combust_vel_mais_rent_vel_a_gasolina">O combustível mais rentável é a GASOLINA.</string>
 
+    <string name="consumption_car_details_format">
+        %1$s\nGasolina: %2$.1f Km/L, Etanol: %3$.1f Km/L
+    </string>
+
+    <string name="consumption_error_input">Preencha todos os campos com valores válidos (distância, preços).</string>
+
+    <string name="calculation_result_format">
+        O combustível mais vantajoso é o %1$s.\n\n
+        Custo Total Mínimo: R$ %2$.2f\n
+        Custo Gasolina: R$ %3$.2f\n
+        Custo Etanol: R$ %4$.2f
+    </string>
+    <string name="calcular_melhor_combust_vel">CALCULAR MELHOR COMBUSTÍVEL</string>
+    <string name="dist_ncia_km">Distância (Km)</string>
+    <string name="dist_ncia_a_ser_percorrida_km">Distância a ser Percorrida (Km)</string>
+    <string name="pre_o_do_etanol">Preço do Etanol</string>
+    <string name="pre_o_da_gasolina">Preço da Gasolina</string>
+    <string name="pre_o_por_litro_r_l">Preço por Litro (R$/L)</string>
+    <string name="pre_o_da_gasolina_r_l">Preço da Gasolina (R$/L)</string>
+    <string name="pre_o_do_etanol_r_l">Preço do Etanol (R$/L)</string>
+    <string name="detalhes_do_carro">Detalhes do Carro</string>
+    <string name="dist_ncia_da_viagem_km">Distância da viagem (Km)</string>
 </resources>

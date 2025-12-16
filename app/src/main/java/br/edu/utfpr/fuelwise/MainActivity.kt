@@ -1,99 +1,62 @@
 package br.edu.utfpr.fuelwise
 
-import android.app.Activity
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.widget.doAfterTextChanged
-import androidx.lifecycle.ViewModelProvider
-import br.edu.utfpr.fuelwise.databinding.ActivityMainBinding
-import br.edu.utfpr.fuelwise.MainViewModel
-import br.edu.utfpr.fuelwise.CarModel
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+
+
 
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
-    private lateinit var viewModel: MainViewModel
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var carAdapter: CarAdapter
 
-    companion object {
-        // Chave de Intent para comunicação entre as Activities
-        const val EXTRA_CAR_MODEL = "com.example.fuelwise.CAR_MODEL"
-    }
-
-    // Contrato para lançar e receber o resultado da tela de seleção de carro
-    private val consumptionResultLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            val carModel = result.data?.getParcelableExtra<CarModel>(EXTRA_CAR_MODEL)
-
-            // Preenche os campos de consumo no ViewModel com os dados do carro selecionado
-            carModel?.let {
-                viewModel.setConsumption(it.consumptionGasoline, it.consumptionEthanol)
-            }
-        }
-    }
+    // Lista de carros de exemplo para inicialização
+    private val carList = createCarList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        // 1. Inicializar o RecyclerView
+        recyclerView = findViewById(R.id.recycler_view_cars)
+        // 2. Configurar o Adapter
+        // Passamos a lista de carros e definimos o que acontece no clique (o lambda)
+        carAdapter = CarAdapter(carList) { carModel ->
+            // Chama a função de navegação quando um carro é clicado
+            navigateToConsumption(carModel)
+        }
 
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-
-        setupInputBindings()
-        setupListeners()
-        setupObservers()
+        // 3. Configurar o LayoutManager
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = carAdapter
     }
 
-    private fun setupInputBindings() {
-        // Liga os inputs ao LiveData
-        binding.editGasolinePrice.doAfterTextChanged { viewModel.gasolinePrice.value = it.toString() }
-        binding.editEthanolPrice.doAfterTextChanged { viewModel.ethanolPrice.value = it.toString() }
-        binding.editGasolineConsumption.doAfterTextChanged { viewModel.gasolineConsumption.value = it.toString() }
-        binding.editEthanolConsumption.doAfterTextChanged { viewModel.ethanolConsumption.value = it.toString() }
-
-        // Observa o LiveData para atualizar o EditText (quando o consumo retorna da 2ª tela)
-        viewModel.gasolineConsumption.observe(this) { value ->
-            if (binding.editGasolineConsumption.text.toString() != value) {
-                binding.editGasolineConsumption.setText(value)
-            }
-        }
-        viewModel.ethanolConsumption.observe(this) { value ->
-            if (binding.editEthanolConsumption.text.toString() != value) {
-                binding.editEthanolConsumption.setText(value)
-            }
-        }
+    /**
+     * Cria e retorna uma lista de CarModel (dados mockados para teste).
+     */
+    private fun createCarList(): List<CarModel> {
+        return listOf(
+            CarModel(1, "Fiat Argo 1.0", 14.2, 9.9),
+            CarModel(2, "VW Polo TSI", 13.8, 9.6),
+            CarModel(3, "Hyundai HB20 1.0", 12.8, 8.8),
+            CarModel(4, "Chevrolet Onix Plus", 15.3, 10.9)
+        )
     }
 
-    private fun setupListeners() {
-        // Ação de cálculo
-        binding.buttonCalculate.setOnClickListener {
-            viewModel.calculateFuel()
-        }
+    /**
+     * Inicia a ConsumptionActivity e passa o CarModel como Parcelable.
+     * Esta é a função que resolveu o crash da última vez.
+     */
+    private fun navigateToConsumption(car: CarModel) {
+        val intent = Intent(this, ConsumptionActivity::class.java)
 
-        // Ação de buscar carro (inicia a ConsumptionActivity)
-        binding.buttonSearchConsumption.setOnClickListener {
-            val intent = Intent(this, ConsumptionActivity::class.java)
-            consumptionResultLauncher.launch(intent)
-        }
-    }
+        // CHAVE CRUCIAL: "CAR_MODEL" - DEVE CORRESPONDER AO QUE A CONSUMPTIONACTIVITY ESPERA
+        intent.putExtra("CAR_MODEL", car)
 
-    private fun setupObservers() {
-        // Observa a mensagem de resultado e a exibe
-        viewModel.resultMessage.observe(this) { message ->
-            binding.textResult.text = message
-        }
-
-        // Observa a cor do resultado
-        viewModel.resultColor.observe(this) { colorInt ->
-            // Converte o Int (HEX) para a cor que o TextView pode usar
-            val colorHex = String.format("#%06X", (0xFFFFFF and colorInt))
-            binding.textResult.setTextColor(Color.parseColor(colorHex))
-        }
+        startActivity(intent)
     }
 }
